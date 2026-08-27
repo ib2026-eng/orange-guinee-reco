@@ -1,4 +1,4 @@
-import { initTabs } from './tabs.js';
+import { initNav } from './nav.js';
 import { initClientSearch } from './client-search.js';
 import { initNbo } from './views/nbo.js';
 import { initTopn } from './views/topn.js';
@@ -6,7 +6,7 @@ import { initSimilar } from './views/similar.js';
 import { initHybrid } from './views/hybrid.js';
 import { health } from './api.js';
 
-initTabs();
+initNav();
 initClientSearch();
 initNbo();
 initTopn();
@@ -15,12 +15,14 @@ initHybrid();
 
 async function checkHealth() {
   const badge = document.getElementById('apiStatusBadge');
+  const dot = document.getElementById('apiPulseDot');
   try {
     const data = await health();
-    badge.textContent = `API · ${data.n_clients.toLocaleString('fr-FR')} clients · ${data.n_pass} pass`;
+    badge.lastChild.textContent = `${data.n_clients.toLocaleString('fr-FR')} clients · ${data.n_pass} pass`;
+    dot.classList.remove('off');
   } catch {
-    badge.textContent = 'API · injoignable';
-    badge.style.borderColor = 'rgba(255,60,60,.5)';
+    badge.lastChild.textContent = 'API injoignable';
+    dot.classList.add('off');
   }
 }
 checkHealth();

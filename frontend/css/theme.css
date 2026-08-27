@@ -1,0 +1,33 @@
+/* Jetons de design — identite propre a ce projet (pas de reprise d'un
+   autre produit). Fond neutre clair, cartes blanches avec ombre douce,
+   accent orange (couleur de marque Orange) applique avec parcimonie. */
+:root{
+  --bg:#F4F4F6;
+  --surface:#FFFFFF;
+  --surface-muted:#FAFAFB;
+  --border:#E6E6EA;
+  --text:#181820;
+  --text-muted:#6B6B76;
+  --text-faint:#A0A0AA;
+
+  --accent:#FF6A00;
+  --accent-hover:#E65F00;
+  --accent-tint:#FFF1E6;
+
+  --positive:#1C8A5B;
+  --positive-tint:#E7F6EF;
+  --warn:#B5751F;
+  --warn-tint:#FBF1E3;
+  --danger:#C43D3D;
+  --danger-tint:#FBEAEA;
+
+  --radius-sm:8px;
+  --radius-md:14px;
+  --radius-lg:20px;
+
+  --shadow-card:0 1px 2px rgba(20,20,30,.04), 0 8px 24px -12px rgba(20,20,30,.12);
+  --shadow-pop:0 4px 14px -4px rgba(20,20,30,.18);
+
+  --font-display:'Manrope',sans-serif;
+  --font-body:'Inter',sans-serif;
+}

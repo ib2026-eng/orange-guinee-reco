@@ -16,10 +16,10 @@ async function renderSampleChips() {
   const el = document.getElementById('clientSamples');
   try {
     const { clients } = await sampleClients();
-    el.innerHTML = `<span>Exemples :</span>` + clients.map(c =>
-      `<button type="button" class="sample-chip ${c.cold_start ? 'cold' : ''}" data-id="${c.client_id}">${c.client_id}${c.cold_start ? ' · cold-start' : ''}</button>`
+    el.innerHTML = `<span class="lbl">Exemples :</span>` + clients.map(c =>
+      `<button type="button" class="chip ${c.cold_start ? 'cold' : ''}" data-id="${c.client_id}">${c.client_id}${c.cold_start ? ' · cold-start' : ''}</button>`
     ).join('');
-    el.querySelectorAll('.sample-chip').forEach(btn => {
+    el.querySelectorAll('.chip').forEach(btn => {
       btn.addEventListener('click', () => selectClient(btn.dataset.id));
     });
   } catch {

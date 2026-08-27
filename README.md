@@ -30,10 +30,10 @@ Documentation interactive une fois lance : `http://localhost:8000/docs`.
 ## Frontend
 
 `frontend/` est une petite plateforme statique (vanilla JS, sans etape de
-build) inspiree de la structure/identite visuelle d'`orange-platform`
-(header noir + logo Orange, navigation par onglets, panels/KPI/badges).
-Recherche d'un client (avec des exemples cliquables, y compris cold-start)
-et affichage des 4 modes de recommandation.
+build), identite propre a ce projet : navigation laterale, cartes blanches
+sur fond neutre, accent orange. Recherche d'un client (avec des exemples
+cliquables, y compris cold-start) et affichage des 4 modes de
+recommandation.
 
 Pour la lancer en local a cote de l'API (`docker compose up --build -d`) :
 ```bash
@@ -42,8 +42,7 @@ python3 -m http.server 8081
 # puis ouvrir http://localhost:8081
 ```
 Par defaut le frontend appelle l'API sur `http://localhost:8000`
-(`frontend/js/config.js` — a adapter une fois l'API deployee ailleurs,
-meme convention que `orange-platform/frontend/js/config.js`).
+(`frontend/js/config.js` — a adapter une fois l'API deployee ailleurs).
 
 ## Structure
 

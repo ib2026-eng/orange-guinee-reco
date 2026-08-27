@@ -9,16 +9,14 @@ async function render(clientId) {
     renderClientBadge(clientId, data.cold_start);
     const reco = data.recommendations[0];
     if (!reco) {
-      panel.innerHTML = `<div class="empty-state">Aucune recommandation disponible pour ce client.</div>`;
+      panel.innerHTML = `<div class="state empty">Aucune recommandation disponible pour ce client.</div>`;
       return;
     }
     panel.innerHTML = `
-      <span class="panel-label">RECOMMANDATION</span>
-      <div style="display:flex; align-items:baseline; gap:16px;">
-        <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:32px;">${reco.nom_pass_regroupe}</div>
-        ${reco.score !== null && reco.score !== undefined
-          ? `<div style="font-family:'JetBrains Mono',monospace; color:var(--grey); font-size:13px;">score ${reco.score.toFixed(3)}</div>`
-          : `<div style="font-family:'JetBrains Mono',monospace; color:var(--grey); font-size:13px;">popularité segment</div>`}
+      <span class="card-eyebrow">Recommandation</span>
+      <div class="hero-pick" style="margin-top:14px;">
+        <div class="name">${reco.nom_pass_regroupe}</div>
+        <div class="score-tag">${reco.score !== null && reco.score !== undefined ? `score ${reco.score.toFixed(3)}` : 'popularité segment'}</div>
       </div>
     `;
   } catch (e) {

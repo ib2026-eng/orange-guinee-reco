@@ -2,18 +2,17 @@ export function renderClientBadge(clientId, coldStart) {
   const row = document.getElementById('clientBadgeRow');
   row.style.display = '';
   row.innerHTML = `
-    <span class="cid">Client :</span>
-    <span class="badge mono" style="font-family:'JetBrains Mono',monospace;">${clientId}</span>
-    <span class="badge ${coldStart ? 'cold-start' : 'actif'}">${coldStart ? 'Cold-start · repli popularité' : 'Client actif'}</span>
+    <span class="cid">${clientId}</span>
+    <span class="pill ${coldStart ? 'cold' : 'actif'}">${coldStart ? 'Cold-start · repli popularité' : 'Client actif'}</span>
   `;
 }
 
 export function renderLoading(panel) {
-  panel.innerHTML = `<div class="loading-state">Chargement…</div>`;
+  panel.innerHTML = `<div class="state loading">Chargement…</div>`;
 }
 
 export function renderError(panel, message) {
-  panel.innerHTML = `<div class="error-state">${message}</div>`;
+  panel.innerHTML = `<div class="state-error">${message}</div>`;
 }
 
 export function formatGnf(value) {

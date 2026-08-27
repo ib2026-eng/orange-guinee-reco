@@ -431,3 +431,36 @@ via `python3 -m http.server 8081` pour tester un vrai scénario
 cross-origin. Testé dans le navigateur : les 4 modes avec un client actif,
 le repli cold-start (badge distinct affiché), et le cas client inconnu
 (message d'erreur affiché proprement). Tout fonctionne comme attendu.
+
+### Refonte du design (à la demande de l'utilisateur : sans inspiration d'`orange-platform`)
+
+L'utilisateur a demandé de refaire le frontend sans reprendre la structure/
+identité visuelle d'`orange-platform` cette fois. Tout ce qui avait été
+copié ou dérivé de ce projet a été supprimé : `css/tokens.css` (copié tel
+quel), `css/base.css`/`css/views.css` (classes reprises), `assets/orange-logo.png`
+(asset emprunté), `tabs.js` (nommage identique).
+
+Nouvelle identité, propre à ce projet :
+- Navigation **latérale** (sidebar) plutôt que des onglets en haut —
+  changement structurel, pas juste un re-skin.
+- Fond neutre gris clair (`--bg:#F4F4F6`), cartes blanches avec ombre douce
+  et coins arrondis (`--radius-lg:20px`) plutôt que le style noir/blanc à
+  angles droits (`--radius:2px`) de l'ancien design.
+- Typographie : Manrope (titres) + Inter (corps) uniquement — pas de
+  JetBrains Mono, abandon du côté "terminal technique" de l'ancien design
+  au profit d'un rendu plus doux, type SaaS moderne.
+- Logo : glyphe généré en CSS (dégradé orange, initiales "RP") au lieu de
+  réutiliser l'asset PNG du projet source.
+- Composants propres au projet : `reco-row`/`roi-row` (listes de
+  recommandations en grille), `pill` (badge actif/cold-start), `chip`
+  (exemples de clients) — noms et styles différents des équivalents
+  `orange-platform` (`badge`, `sample-chip`, `list-table`).
+- L'orange reste la couleur d'accent (identité Orange elle-même, pas une
+  reprise du projet source) mais appliqué différemment : dégradé sur le
+  glyphe, teinte pâle (`--accent-tint`) pour les états actifs plutôt que
+  fond plein.
+
+Revalidé dans le navigateur après la refonte : les 4 modes avec un client
+actif, le repli cold-start, badge de statut API (pastille verte/rouge).
+Tout fonctionne à l'identique de la version précédente, seul le rendu
+visuel a changé.

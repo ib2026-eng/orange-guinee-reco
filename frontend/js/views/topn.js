@@ -3,6 +3,16 @@ import { renderClientBadge, renderLoading, renderError } from '../render-helpers
 
 let currentClientId = null;
 
+function renderList(recommendations) {
+  return `<div class="reco-list">` + recommendations.map((r, i) => `
+    <div class="reco-row">
+      <div class="rank">${i + 1}</div>
+      <div class="name">${r.nom_pass_regroupe}</div>
+      <div class="meta">${r.score !== null && r.score !== undefined ? r.score.toFixed(3) : '—'}</div>
+    </div>
+  `).join('') + `</div>`;
+}
+
 async function render() {
   const panel = document.getElementById('topnPanel');
   if (!currentClientId) return;
@@ -12,23 +22,10 @@ async function render() {
     const data = await topN(currentClientId, n);
     renderClientBadge(currentClientId, data.cold_start);
     if (data.recommendations.length === 0) {
-      panel.innerHTML = `<div class="empty-state">Aucune recommandation disponible pour ce client.</div>`;
+      panel.innerHTML = `<div class="state empty">Aucune recommandation disponible pour ce client.</div>`;
       return;
     }
-    panel.innerHTML = `
-      <table class="reco-table">
-        <thead><tr><th>#</th><th>Pass</th><th>Score</th></tr></thead>
-        <tbody>
-          ${data.recommendations.map((r, i) => `
-            <tr>
-              <td class="rank">${i + 1}</td>
-              <td>${r.nom_pass_regroupe}</td>
-              <td class="mono">${r.score !== null && r.score !== undefined ? r.score.toFixed(3) : '—'}</td>
-            </tr>
-          `).join('')}
-        </tbody>
-      </table>
-    `;
+    panel.innerHTML = renderList(data.recommendations);
   } catch (e) {
     renderError(panel, e.message);
   }
