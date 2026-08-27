@@ -1,0 +1,9 @@
+data/
+splits/
+models/
+docs/
+notebooks/
+*.log
+__pycache__/
+*.pyc
+.git/

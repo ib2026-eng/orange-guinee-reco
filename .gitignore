@@ -1,0 +1,17 @@
+# Donnees et modeles -- volumineux et/ou derives de donnees clients Orange
+# Guinee, ne doivent pas etre pousses sur GitHub. Distribues separement
+# (voir dist_package/ genere localement, envoye directement).
+data
+models/
+splits/
+dist_package/
+
+# Artefact de run CatBoost (bake-off)
+catboost_info/
+
+# Python
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store

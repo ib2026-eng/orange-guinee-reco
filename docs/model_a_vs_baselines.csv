@@ -1,0 +1,4 @@
+model,ndcg@1,ndcg@3,ndcg@5,precision@1,precision@3,precision@5,recall@1,recall@3,recall@5,coverage@5
+Baseline popularite globale,0.7321,0.7377,0.7688,0.7321,0.6985,0.643,0.153,0.4666,0.707,0.7538
+Baseline popularite par segment,0.7412,0.7545,0.7823,0.7412,0.7064,0.6457,0.1727,0.4802,0.7125,0.7538
+Modele A (LightGBM ranker),0.9699,0.9296,0.9178,0.9699,0.8157,0.6974,0.2962,0.6057,0.7751,0.8462

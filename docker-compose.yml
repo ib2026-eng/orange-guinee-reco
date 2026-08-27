@@ -1,0 +1,15 @@
+services:
+  reco-api:
+    build: .
+    image: orange-guinee-reco-api:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      # data/ est un symlink local vers le dossier de livraison -- l'API ne
+      # lit en pratique que features_client.parquet, features_pass.parquet
+      # et interactions_client_pass.parquet (le reste, ex.
+      # training_ranking.parquet, n'est jamais ouvert par api/main.py).
+      # En bind mount ca ne coute rien de monter le dossier entier.
+      - ./data:/app/data:ro
+      - ./models:/app/models:ro
+    restart: unless-stopped
