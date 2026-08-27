@@ -1,0 +1,33 @@
+/* Jetons de design -- identite visuelle noir/blanc/orange inchangee.
+   Seul ajout : une palette fonctionnelle de risque (verte -> rouge, sobre,
+   peu saturee) utilisee pour la carte, les badges et les KPI de risque.
+   Les anciennes variables (--r0..--r3, --safe/--risk/--mid) sont conservees
+   et repointees vers cette palette pour ne rien casser en aval. */
+:root{
+  --paper:#FFFFFF; --ink:#0A0A0A; --panel:#FFFFFF; --panel-2:#F6F6F6; --line:#E4E4E4; --line-strong:#0A0A0A;
+  --orange:#FF7900; --cream:#0A0A0A; --grey:#6E6E6E;
+
+  /* Palette fonctionnelle risque -- sert a la comprehension des donnees
+     (carte, indicateurs de risque, KPI), jamais decorative. */
+  --risk-faible:#3C7A4E; --risk-faible-tx:#FFFFFF;
+  --risk-modere:#A6702B; --risk-modere-tx:#FFFFFF;
+  --risk-eleve:#B5502F; --risk-eleve-tx:#FFFFFF;
+  --risk-critique:#8C2F2A; --risk-critique-tx:#FFFFFF;
+
+  /* Alias historiques (carte, badges) -- repointes vers la palette
+     fonctionnelle ci-dessus ; noms conserves a l'identique. */
+  --r0:var(--risk-faible); --r0-tx:var(--risk-faible-tx);
+  --r1:var(--risk-modere); --r1-tx:var(--risk-modere-tx);
+  --r2:var(--risk-eleve); --r2-tx:var(--risk-eleve-tx);
+  --r3:var(--risk-critique); --r3-tx:var(--risk-critique-tx);
+  --safe:var(--risk-faible); --risk:var(--risk-critique); --mid:var(--risk-modere);
+
+  --radius:2px;
+
+  /* Durees de transition partagees -- V2 premium (section 44). Reprennent
+     les durees deja utilisees ponctuellement dans animations.css/views.css,
+     centralisees ici pour que toute nouvelle regle s'y reference. */
+  --transition-fast:150ms ease;
+  --transition-normal:250ms ease;
+  --transition-slow:400ms ease;
+}

@@ -387,3 +387,47 @@ cd ~/Projects/orange-guinee-reco
 docker compose up --build
 # puis : curl -X POST http://localhost:8000/recommend/top-n/<client_id>?n=5
 ```
+
+## Frontend (inspiré d'`orange-platform`)
+
+À la demande de l'utilisateur : reprendre la structure et l'identité
+visuelle de son projet existant `orange-platform` (plateforme de churn
+analytics Orange Money, backend FastAPI + frontend vanilla JS sans build
+step, déployée Render + GitHub Pages) pour construire une interface pour
+ce système de recommandation.
+
+Éléments repris à l'identique ou quasi-identique :
+- `css/tokens.css` copié tel quel (identité noir/blanc/orange, palette de
+  couleurs fonctionnelle, polices Space Grotesk/Inter/JetBrains Mono).
+- Structure `topbar` (logo + titre) / `tabs` / `panel` / `kpi-row` /
+  `badge` / `btn-primary`/`btn-secondary` reprise de
+  `orange-platform/frontend/css/{base,components}.css`.
+- Pattern JS : `main.js` orchestrateur qui appelle un `init*()` par vue,
+  `tabs.js` repris quasi verbatim, communication entre modules par
+  `CustomEvent` (`client:selected` ici, `roster:ready`/`client:select`
+  côté `orange-platform`) plutôt que par couplage direct entre vues.
+- `assets/orange-logo.png` copié directement du projet source.
+
+Différences volontaires (le domaine n'est pas le même) :
+- `orange-platform` fonctionne sur un dataset **uploadé par l'utilisateur**
+  (pipeline d'ingestion CSV, `client-store.js` comme source de vérité
+  unique) — ce projet a ses 2,47M clients déjà chargés côté API, donc pas
+  de flux d'import : juste une barre de recherche client (+ chips
+  d'exemples aléatoires via le nouvel endpoint `GET /demo/sample-clients`,
+  mélange client actif/cold-start, pour pouvoir tester sans connaître
+  d'identifiant réel à l'avance).
+- 4 onglets = 4 modes de recommandation (au lieu des 6 onglets métier
+  churn de `orange-platform`), une seule barre de recherche client
+  persistante au-dessus des onglets plutôt que par vue.
+
+**Changement API nécessaire** : ajout de `CORSMiddleware` dans
+`api/main.py` (le frontend est servi depuis une origine différente),
+origines configurables via `RECO_ALLOWED_ORIGINS` (`*` par défaut en
+local), même pattern que `orange-platform/backend/app/main.py`.
+
+**Validé en local** : API relancée via `docker compose up --build -d`
+(image reconstruite avec CORS + `/demo/sample-clients`), frontend servi
+via `python3 -m http.server 8081` pour tester un vrai scénario
+cross-origin. Testé dans le navigateur : les 4 modes avec un client actif,
+le repli cold-start (badge distinct affiché), et le cas client inconnu
+(message d'erreur affiché proprement). Tout fonctionne comme attendu.

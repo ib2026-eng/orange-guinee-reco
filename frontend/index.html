@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orange Guinée — Recommandation de pass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/views.css">
+</head>
+<body>
+<div class="shell">
+
+  <header class="topbar">
+    <div class="brand">
+      <img src="assets/orange-logo.png" alt="Orange Guinée" class="brand-logo">
+      <div class="brand-text">
+        <div class="brand-product">Recommandation de pass</div>
+      </div>
+    </div>
+    <span class="status-note" id="apiStatusBadge">API · vérification…</span>
+  </header>
+
+  <div class="client-search">
+    <input type="text" id="clientSearchInput" placeholder="Identifiant client (num)…" autocomplete="off">
+    <button type="button" id="clientSearchBtn">Rechercher</button>
+  </div>
+  <div class="client-samples" id="clientSamples"></div>
+
+  <div id="clientBadgeRow" class="client-badge-row" style="display:none;"></div>
+
+  <div class="tabs">
+    <div class="tab active" data-view="nbo">Next Best Offer</div>
+    <div class="tab" data-view="topn">Top N</div>
+    <div class="tab" data-view="similar">Clients similaires</div>
+    <div class="tab" data-view="hybrid">Hybride ROI</div>
+  </div>
+
+  <!-- NEXT BEST OFFER -->
+  <div class="view active" id="nbo">
+    <div class="view-header"><h1>Next Best Offer</h1><p>La meilleure recommandation unique pour ce client — Modèle A (LightGBM ranker)</p></div>
+    <div class="panel" id="nboPanel"><div class="empty-state">Recherchez un client pour voir sa recommandation.</div></div>
+  </div>
+
+  <!-- TOP N -->
+  <div class="view" id="topn">
+    <div class="view-header"><h1>Top N</h1><p>Les N meilleures recommandations classées par pertinence — Modèle A (LightGBM ranker)</p></div>
+    <div class="panel">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+        <span class="panel-label" style="margin-bottom:0;">TOP-N RECOMMANDATIONS</span>
+        <label style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--grey); display:flex; align-items:center; gap:8px;">
+          N = <input type="number" id="topnInput" value="5" min="1" max="20" style="width:52px; font-family:'JetBrains Mono',monospace; padding:4px 6px; border:1px solid var(--line-strong);">
+        </label>
+      </div>
+      <div id="topnPanel"><div class="empty-state">Recherchez un client pour voir ses recommandations.</div></div>
+    </div>
+  </div>
+
+  <!-- CLIENTS SIMILAIRES -->
+  <div class="view" id="similar">
+    <div class="view-header"><h1>Clients similaires</h1><p>"Les clients similaires ont aussi acheté" — Modèle C (ALS, filtrage collaboratif)</p></div>
+    <div class="panel" id="similarPanel"><div class="empty-state">Recherchez un client pour voir les recommandations collaboratives.</div></div>
+  </div>
+
+  <!-- HYBRIDE ROI -->
+  <div class="view" id="hybrid">
+    <div class="view-header"><h1>Hybride ROI</h1><p>Classement par valeur attendue = P(achat) × prix catalogue — Modèle B (classifieur calibré)</p></div>
+    <div class="panel" id="hybridPanel"><div class="empty-state">Recherchez un client pour voir le classement par valeur attendue.</div></div>
+  </div>
+
+</div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

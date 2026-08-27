@@ -13,6 +13,7 @@ Fallback cold-start transparent : l'appelant n'a pas a savoir si le client
 est nouveau ou non, le routage se fait en interne selon
 `a_deja_achete_pass`.
 """
+import os
 import sys
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -23,6 +24,7 @@ import lightgbm as lgb
 import numpy as np
 import pandas as pd
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 import common as c
@@ -79,6 +81,20 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="Orange Guinee - Recommandation de pass", lifespan=lifespan)
+
+# Le frontend (frontend/) est servi depuis une origine differente (fichier
+# local, python -m http.server, ou GitHub Pages une fois deploye) --
+# CORS necessaire pour qu'il puisse appeler cette API. Origines
+# surchargeables via RECO_ALLOWED_ORIGINS (liste separee par des virgules) ;
+# "*" par defaut, adapte au developpement local mais a restreindre en
+# production (cf. orange-platform/backend qui utilise une liste explicite).
+_allowed_origins = os.environ.get("RECO_ALLOWED_ORIGINS", "*")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"] if _allowed_origins == "*" else _allowed_origins.split(","),
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # ---------------------------------------------------------------------------
@@ -245,3 +261,18 @@ def hybrid_roi(client_id: str, n: int = 5):
 @app.get("/health")
 def health():
     return {"status": "ok", "n_clients": len(STATE["features_client"]), "n_pass": STATE["n_pass"]}
+
+
+@app.get("/demo/sample-clients")
+def sample_clients():
+    """Quelques identifiants clients reels (melange actif/cold-start) pour
+    permettre de tester l'API/le frontend sans devoir en connaitre a l'avance."""
+    fc = STATE["features_client"]
+    actifs = fc[fc["a_deja_achete_pass"]].sample(n=3, random_state=None)["num"]
+    cold = fc[~fc["a_deja_achete_pass"]].sample(n=2, random_state=None)["num"]
+    return {
+        "clients": (
+            [{"client_id": cid, "cold_start": False} for cid in actifs]
+            + [{"client_id": cid, "cold_start": True} for cid in cold]
+        )
+    }
