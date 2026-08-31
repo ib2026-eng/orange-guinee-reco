@@ -48,6 +48,51 @@ Alternatives possibles : ODBC via `pyodbc` avec le driver Impala Cloudera,
 ou SQLAlchemy avec le dialecte `impala`. `impyla` reste le choix le plus
 direct pour un usage pandas.
 
+## 2bis. Étapes concrètes pour se connecter réellement
+
+Dans l'ordre, une fois la librairie installée :
+
+**a) Obtenir les informations de connexion** — étape bloquante, à demander
+à l'équipe qui gère le cluster Hadoop/Impala (infra/data Orange Guinée) :
+host, port (souvent `21050`), mécanisme d'authentification (`GSSAPI` /
+`LDAP` / `NOSASL`), accès réseau nécessaire (VPN ?), noms des
+bases/tables concernées. Sans ces informations, aucune étape suivante
+n'est possible.
+
+**b) Si l'authentification est Kerberos (`GSSAPI`)** — obtenir un ticket
+avant de lancer le script Python, sinon la connexion échoue même avec un
+code correct :
+```bash
+kinit <identifiant>@ORANGE-GUINEE.INTERNAL
+```
+
+**c) Tester la connexion** :
+```python
+from impala.dbapi import connect
+
+conn = connect(host="<host fourni>", port=21050, auth_mechanism="GSSAPI")
+cursor = conn.cursor()
+cursor.execute("SHOW DATABASES")
+print(cursor.fetchall())
+```
+Si une liste de bases s'affiche, la connexion fonctionne.
+
+**d) Explorer les tables disponibles** avant d'écrire les vraies requêtes :
+```python
+cursor.execute("SHOW TABLES IN <nom_de_la_base>")
+print(cursor.fetchall())
+
+cursor.execute("DESCRIBE <nom_de_la_base>.<table_clients>")
+print(cursor.fetchall())  # liste des colonnes disponibles
+```
+
+**e) Récupérer des données en DataFrame pandas** :
+```python
+from impala.util import as_pandas
+cursor.execute("SELECT * FROM <base>.<table_clients> WHERE num = 'XYZ'")
+df = as_pandas(cursor)
+```
+
 ## 3. Point critique : la latence
 
 L'API sert actuellement les recommandations en **10 à 20 ms**, parce que
